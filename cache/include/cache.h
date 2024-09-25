@@ -26,7 +26,7 @@ public:
 };
 
 namespace lfu {
-  enum { NOT_EXIST = 0, EXIST};
+  enum class ret_t { NOT_EXIST = 0, EXIST};
 
   /* elem_node_t is a node of node list in the article */
   template <typename PageT, typename FreqNodeT>
@@ -89,14 +89,14 @@ namespace lfu {
 
     bool full() const { return (sz_ >= cp_); }
 
-    int insert(KeyT key) {
+    ret_t insert(KeyT key) {
       #ifdef DEBUG
       print_cache_t();
       #endif
 
       auto hash_elem_it = hash_.find(key);
       if (hash_elem_it != hash_.end())
-        return EXIST;
+        return ret_t::EXIST;
 
       if (full()) {
         auto freq_node_it = freq_list_.begin();
@@ -124,7 +124,7 @@ namespace lfu {
       freq_node_it->insert_first_elem_to_hash(hash_, key);
       ++sz_;
 
-      return NOT_EXIST;
+      return ret_t::NOT_EXIST;
     }
 
     void access(KeyT key) {
@@ -176,10 +176,10 @@ namespace lfu {
   size_t hits = 0;
   caches::lfu::cache_t<int> c{m};
     for (size_t i = 0; i < n; ++i) {
-    if (c.insert(data[i])) {
+    if (c.insert(data[i]) == ret_t::EXIST) {
       c.access(data[i]);
       hits += 1;
-    }  
+    } 
   }
 
   return hits;
