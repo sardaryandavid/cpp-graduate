@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 namespace caches {
 
@@ -25,8 +26,7 @@ public:
 };
 
 namespace lfu {
-  constexpr int NOT_EXIST = 0;
-  constexpr int EXIST = 1;
+  enum { NOT_EXIST = 0, EXIST};
 
   /* elem_node_t is a node of node list in the article */
   template <typename PageT, typename FreqNodeT>
@@ -69,7 +69,7 @@ namespace lfu {
     void push_elem_front(NodeT elem) { elem_list_.push_front(elem); }
     void insert_first_elem_to_hash(HashT& hash, KeyT key) {
       auto elem_it = elem_list_.begin();
-      hash.insert(std::make_pair(key, elem_it));
+      hash.emplace(key, elem_it);
     }
     int get_freq() const { return freq_; }
   };
@@ -212,10 +212,9 @@ namespace belady {
     }
 
     bool is_exist(T val) const {
-      for (auto elem : cache_)
-        if (elem == val)
-          return true;
-
+      if (std::find(cache_.begin(), cache_.end(), val) != std::end(cache_))
+        return true;
+      
       return false;
     }
 

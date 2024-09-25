@@ -16,3 +16,12 @@ If you want to add comparation with belady
 ```
 cmake .. -DBENCH=ON
 ```
+
+# Input
+Enter cache size, elem num (n) and then n elements \
+For example:
+```
+$ ./lfu
+2 6 1 2 1 2 1 2
+4
+```
