@@ -21,5 +21,6 @@ struct point_t {
   point_t operator*(double) const;
 
   bool is_intersect_points(const point_t& p) const;
+  void print() const;
 };
 } // geometry

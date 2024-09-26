@@ -2,6 +2,7 @@
 
 namespace geometry{
 
+/* TODO: implement in line segment */
 bool line_t::is_intersect_point_line(const point_t& p, const point_t& min, const point_t& max) const {
   if (p_ == p)
     return true;
@@ -11,4 +12,6 @@ bool line_t::is_intersect_point_line(const point_t& p, const point_t& min, const
 
   return (v.is_collinear(d_) && vp.inside(min, max));
 }
+
+
 } // geometry

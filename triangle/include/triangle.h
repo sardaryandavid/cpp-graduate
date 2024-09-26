@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "plane.h"
+#include "line_segm.h"
 
 namespace geometry {
 
@@ -22,18 +23,17 @@ struct triangle_t {
 
   bool check_d(const triangle_t& t, const vector_t& v1, const vector_t& v2, const plane_t& p) const;
 
-  /* TODO: Sort vertices */
   /* Implementation the method of separation axes */
   bool is_intersect_2d(const triangle_t& t) const;
 
   fig degenerate() const;
 
-  /* WARNING: use only if triangle degenerates to line */
+  /* WARNING: use only if triangle degenerates to line or line segment */
   line_t make_line() const;
   line_segm_t make_line_segm() const;
 
   bool is_intersect_triangles_3d(const triangle_t& t) const;
-
+  bool check_corner_cases(const triangle_t& t, bool& is_corner_case) const;
   point_t min() const;
   point_t max() const;
   point_t min(const triangle_t& t) const;

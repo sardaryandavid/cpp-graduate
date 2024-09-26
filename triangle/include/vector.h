@@ -9,7 +9,7 @@ namespace geometry {
 
 bool solve_system(double a1, double a2, double a3, 
                   double b1, double b2, double b3,
-                  double& t, double& s);
+                  double& t, double& s, bool& is_inf_sols);
 
 struct vector_t {
   point_t v_;

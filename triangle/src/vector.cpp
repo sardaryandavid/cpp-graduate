@@ -4,14 +4,32 @@ namespace geometry {
 
 bool solve_system(double a1, double a2, double a3, 
                   double b1, double b2, double b3,
-                  double& t, double& s) {
+                  double& t, double& s, bool& is_inf_sols) {
   double determ = det(a1, a2, b1, b2);
+
   if (is_eq(determ, 0)) {
     vector_t v1{a1, a2, a3};
     vector_t v2{b1, b2, b3};
 
     if (v1.is_collinear(v2)) {
-      t = s = 0;
+      if (!is_eq(a1, 0)) {
+        t = a3 / a1;
+        s = 0;
+      }
+
+      else if (!is_eq(a2, 0)) {
+        s = a3 / a2;
+        t = 0;
+      }
+
+      else if (is_eq(a3, 0) && is_eq(b3, 0)) {
+        is_inf_sols = true;
+        t = s = 0;
+      }
+      
+      else
+        return false;
+
       return true;
     }
 
@@ -20,6 +38,7 @@ bool solve_system(double a1, double a2, double a3,
 
   double det1 = det(a3, a2, b3, b2);
   double det2 = det(a1, a3, b1, b3);
+
   t = det1 / determ;
   s = det2 / determ;
 

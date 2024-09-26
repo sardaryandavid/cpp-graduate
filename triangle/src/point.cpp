@@ -41,4 +41,8 @@ bool point_t::is_intersect_points(const point_t& p) const {
 
   return false;
 }
+
+void point_t::print() const {
+  std::cout << x_ << " " << y_ << " " << z_ << std::endl;
+}
 }
