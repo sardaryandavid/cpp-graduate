@@ -2,6 +2,19 @@
 
 namespace geometry {
 
+static bool on_one_side(double d1, double d2, double d3) {
+  return ((is_pos(d1) && is_pos(d2) && is_pos(d3)) || 
+          (is_neg(d1) && is_neg(d2) && is_neg(d3)));
+}
+
+static double signed_volume(const vector_t& a, const vector_t& b, 
+                            const vector_t& c, const vector_t& d) {
+  vector_t v1 = b - a;
+  vector_t v2 = c - a;
+  vector_t v3 = d - a;
+  return 1.0 * v3.scalar_mult(v1.vector_mult(v2)) / 6.0;
+}
+
 plane_t triangle_t::get_plane() const {
   vector_t v1 = v2_ - v1_;
   vector_t v2 = v3_ - v2_;
@@ -35,7 +48,42 @@ bool triangle_t::check_d(const triangle_t& t, const vector_t& v1, const vector_t
   return true;
 }
 
-bool triangle_t::is_intersect_2d(const triangle_t& t) const {
+bool triangle_t::is_intersect_point(const point_t& p) const {
+  plane_t pl = get_plane();
+  if (is_pos(pl.signed_distance_to_point(p)))
+    return false;
+
+  vector_t b = v2_ - v1_;
+  vector_t c = v3_ - v1_;
+  vector_t vp = p - v1_;
+  
+  double pc = vp.scalar_mult(c);
+  double pb = vp.scalar_mult(b);
+  double b_norm = b.scalar_mult(b);
+  double c_norm = c.scalar_mult(c);
+  double bc = b.scalar_mult(c);
+  double den = c_norm * b_norm - bc * bc;
+
+  double m = (pc * b_norm - pb * bc) / den;
+  double l = (pb * c_norm - pc * bc) / den;
+
+  return (is_nneg(l) && is_npos(l - 1) && is_nneg(m) && is_npos(m - 1) && is_npos(l + m - 1));
+}
+
+/* Algorithm here:
+ * https://stackoverflow.com/questions/42740765/intersection-between-line-and-triangle-in-3d */
+bool triangle_t::is_intersect_line_segm(const line_segm_t& ls) const {
+  bool b1 = is_npos(signed_volume(ls.a_, v1_, v2_, v3_) * signed_volume(ls.b_, v1_, v2_, v3_));
+  bool b2 = is_nneg(signed_volume(ls.a_, ls.b_, v1_, v2_) * signed_volume(ls.a_, ls.b_, v2_, v3_));
+  bool b3 = is_nneg(signed_volume(ls.a_, ls.b_, v1_, v2_) * signed_volume(ls.a_, ls.b_, v3_, v1_));
+  vector_t v1 = v2_ - v1_;
+  vector_t v2 = v3_ - v1_;
+  vector_t n = v1.vector_mult(v2);
+  double t = -n.scalar_mult(ls.a_ - v1_) / n.scalar_mult(ls.b_ - ls.a_);
+  return (b1 && b2 && b3 && is_nneg(t) && is_npos(t - 1));
+}
+
+bool triangle_t::is_intersect_triangle_2d(const triangle_t& t) const {
   plane_t p = t.get_plane();
   if (check_d(t, v1_, v2_, p) && check_d(t, v2_, v3_, p) && check_d(t, v3_, v1_, p) &&
       check_d(t, t.v1_, t.v2_, p) && check_d(t, t.v2_, t.v3_, p) && check_d(t, t.v3_, t.v1_, p))
@@ -54,7 +102,7 @@ fig triangle_t::degenerate() const {
 
   if ((v1_ == v2_) || (v1_ == v3_) || (v2_ == v3_) || 
       v1.is_collinear(v2) || v1.is_collinear(v3) || v2.is_collinear(v3))
-    return line;
+    return line_segm;
 
   return triangle;
 }
@@ -62,6 +110,7 @@ fig triangle_t::degenerate() const {
 line_t triangle_t::make_line() const {
   vector_t p = v1_;
   vector_t d;
+  
   if (v1_ != v2_)
     d = v2_ - v1_;
 
@@ -89,54 +138,9 @@ line_segm_t triangle_t::make_line_segm() const {
   return res;
 }
 
-point_t triangle_t::min() const {
-  double x_min = find_fmin(v1_.x_, v2_.x_, v3_.x_);
-  double y_min = find_fmin(v1_.y_, v2_.y_, v3_.y_);
-  double z_min = find_fmin(v1_.z_, v2_.z_, v3_.z_);
-  
-  point_t res{x_min, y_min, z_min};
-  return res;
-}
-
-point_t triangle_t::max() const {
-  double x_max = find_fmax(v1_.x_, v2_.x_, v3_.x_);
-  double y_max = find_fmax(v1_.y_, v2_.y_, v3_.y_);
-  double z_max = find_fmax(v1_.z_, v2_.z_, v3_.z_);
-  
-  point_t res{x_max, y_max, z_max};
-  return res;
-}
-
-point_t triangle_t::min(const triangle_t& t) const {
-    point_t pmin1 = min();
-    point_t pmin2 = t.min();
-    
-    double x_min = std::fmin(pmin1.x_, pmin2.x_);
-    double y_min = std::fmin(pmin1.y_, pmin2.y_);
-    double z_min = std::fmin(pmin1.z_, pmin2.z_);
-    
-    point_t res{x_min, y_min, z_min};
-    return res;
-}
-
-point_t triangle_t::max(const triangle_t& t) const {
-    point_t pmax1 = max();
-    point_t pmax2 = t.max();
-    
-    double x_max = std::fmax(pmax1.x_, pmax2.x_);
-    double y_max = std::fmax(pmax1.y_, pmax2.y_);
-    double z_max = std::fmin(pmax1.z_, pmax2.z_);
-    
-    point_t res{x_max, y_max, z_max};
-    return res;
-}
-
-static bool on_one_side(double d1, double d2, double d3) {
-  return ((is_pos(d1) && is_pos(d2) && is_pos(d3)) || 
-          (is_neg(d1) && is_neg(d2) && is_neg(d3)));
-}
-
 bool triangle_t::check_corner_cases(const triangle_t& t, bool& is_corner_case) const {
+  is_corner_case = false;
+
   fig f1, f2;
   f1 = degenerate();
   f2 = t.degenerate();
@@ -146,55 +150,58 @@ bool triangle_t::check_corner_cases(const triangle_t& t, bool& is_corner_case) c
     point_t p1 = v1_;
     if (f2 == point) {
       point_t p2 = t.v1_;
-      return p1.is_intersect_points(p2);
+      return p1.is_intersect_point(p2);
     }
 
-    else if (f2 == line) {
-      point_t pmin = t.min();
-      point_t pmax = t.max();
-      line_t l = t.make_line();
-      return l.is_intersect_point_line(p1, pmin, pmax);
+    else if (f2 == line_segm) {
+      line_segm_t ls = t.make_line_segm();
+      return ls.is_intersect_point(p1);
     }
 
     else {
-
+      return t.is_intersect_point(p1);
     }
   }
 
-  else if (f1 == line) {
+  else if (f1 == line_segm) {
     is_corner_case = true;
+    line_segm_t ls1 = make_line_segm();
 
     if (f2 == point) {
-      line_t l = make_line();
       point_t p = t.v1_;
-      point_t pmin = min();
-      point_t pmax = max();
-      return l.is_intersect_point_line(p, pmin, pmax);
+      return ls1.is_intersect_point(p);
     }
 
-    else if (f2 == line) {
-      line_segm_t ls1 = make_line_segm();
+    else if (f2 == line_segm) {
       line_segm_t ls2 = t.make_line_segm();
       return ls1.is_intersect_line_segm(ls2);
+    }
+
+    else {
+      return t.is_intersect_line_segm(ls1);
     }
   }
 
   else {
     if (f2 == point) {
       is_corner_case = true;
+      point_t p2 = t.v1_;
+      return is_intersect_point(p2);
     }
 
-    if (f2 == line) {
+    else if (f2 == line_segm) {
       is_corner_case = true;
+      line_segm_t ls2 = t.make_line_segm();
+      return is_intersect_line_segm(ls2);
     }
   }
 
   return false;
 }
 
-bool triangle_t::is_intersect_triangles_3d(const triangle_t& t) const {
+bool triangle_t::is_intersect_triangle_3d(const triangle_t& t) const {
   /* Checking corner cases */
-  bool is_corner_case = false;
+  bool is_corner_case;
   bool res = check_corner_cases(t, is_corner_case);
 
   if (is_corner_case)
@@ -213,7 +220,7 @@ bool triangle_t::is_intersect_triangles_3d(const triangle_t& t) const {
   plane_t p1 = t.get_plane();
   
   if (p0.is_coincident(p1))
-    return is_intersect_2d(t);
+    return is_intersect_triangle_2d(t);
   
   else if (p0.is_parallel(p1))
     return false;
@@ -247,16 +254,18 @@ bool triangle_t::is_intersect_triangles_3d(const triangle_t& t) const {
   line_segm_t ls1 {p00, p01};
   line_segm_t ls2 {p10, p11};
 
-  #ifdef DEBUG
-  std::cout << "t00, t01, t10, 11:\n";
-  std::cout << t00 << " " << t01 << " ";
-  std::cout << t10 << " " << t11 << "\n";
-  #endif
-
   if (!ls1.is_intersect_line_segm(ls2))
     return false;
 
   return true;
+}
+
+triangle_t input_triangle() {
+  point_t v1 = input_point();
+  point_t v2 = input_point();
+  point_t v3 = input_point();
+  triangle_t res {v1, v2, v3};
+  return res;
 }
 
 void triangle_t::print() const {

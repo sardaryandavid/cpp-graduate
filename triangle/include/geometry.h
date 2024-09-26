@@ -16,6 +16,7 @@
  *                                   -> line_segm.h       -> triangle.h
  */
 
+/* TODO: find all functions to include to .h */
 namespace geometry {
 constexpr double acc = 1e-6;
 
@@ -33,6 +34,14 @@ inline bool is_pos(double a) {
 
 inline bool is_neg(double a) {
   return !(is_pos(a) || is_eq(a, 0));
+}
+
+inline bool is_npos(double a) {
+  return !(is_pos(a));
+}
+
+inline bool is_nneg(double a) {
+  return !(is_neg(a));
 }
 
 inline double find_fmax(double a, double b, double c) {
@@ -53,12 +62,6 @@ inline void calculate_intervals(double v1, double v2, double v3,
 inline void calculate_intervals_wrap(double v1, double v2, double v3,
                                     double d1, double d2, double d3,
                                     double& t1, double& t2) {
-  #ifdef DEBUG
-  std::cout << "In calculate_intervals_wrap\n";
-  std::cout << "v1 = " << v1 << " v2 = " << v2 << " v3 = " << v3 << "\n";
-  std::cout << "d1 = " << d1 << " d2 = " << d2 << " d3 = " << d3 << "\n";
-  #endif
-
   if (is_pos(d1 * d2) || is_eq(d1, 0) || is_eq(d2, 0))
     calculate_intervals(v1, v2, v3, d1, d2, d3, t1, t2);
 

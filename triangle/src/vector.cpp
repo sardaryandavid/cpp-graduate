@@ -105,7 +105,15 @@ bool vector_t::operator!=(const vector_t& v) const {
   return !(*this == v);
 }
 
-bool vector_t::inside(const point_t& min, const point_t& max) const {
+bool vector_t::inside(const point_t& p1, const point_t& p2) const {
+  point_t min {std::min(p1.x_, p2.x_), 
+                std::min(p1.y_, p2.y_),
+                std::min(p1.z_, p2.z_)};
+
+  point_t max {std::max(p1.x_, p2.x_), 
+                std::max(p1.y_, p2.y_),
+                std::max(p1.z_, p2.z_)};
+
   if (min.x_ <= v_.x_ && v_.x_ <= max.x_ &&
       min.y_ <= v_.y_ && v_.y_ <= max.y_ && 
       min.z_ <= v_.z_ && v_.z_ <= max.z_)

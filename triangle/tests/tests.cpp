@@ -126,7 +126,7 @@ TEST(triangle, intersection_2d_1) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_2d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_2d(t2));
 }
 
 TEST(triangle, intersection_2d_2) {
@@ -139,7 +139,7 @@ TEST(triangle, intersection_2d_2) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(!t1.is_intersect_2d(t2));
+  ASSERT_TRUE(!t1.is_intersect_triangle_2d(t2));
 }
 
 TEST(triangle, intersection_2d_3) {
@@ -152,7 +152,7 @@ TEST(triangle, intersection_2d_3) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_2d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_2d(t2));
 }
 
 TEST(triangle, intersection_2d_4) {
@@ -165,7 +165,7 @@ TEST(triangle, intersection_2d_4) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_2d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_2d(t2));
 }
 
 TEST(triangle, intersection_2d_5) {
@@ -178,7 +178,176 @@ TEST(triangle, intersection_2d_5) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_2d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_2d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_point_1) {
+  geometry::point_t t1p1 {0, 0, 0};
+  geometry::point_t t1p2 {0, 1, 0};
+  geometry::point_t t1p3 {0, 0, 1};
+  geometry::point_t t2p1 {0, 0.5, 0.5};
+  geometry::point_t t2p2 {0, 0.5, 0.5};
+  geometry::point_t t2p3 {0, 0.5, 0.5};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_point_2) {
+  geometry::point_t t1p1 {0, 0, 0};
+  geometry::point_t t1p2 {0, 1, 0};
+  geometry::point_t t1p3 {0, 0, 1};
+  geometry::point_t t2p1 {0, 0.25, 0.33};
+  geometry::point_t t2p2 {0, 0.25, 0.33};
+  geometry::point_t t2p3 {0, 0.25, 0.33};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_point_3) {
+  geometry::point_t t1p1 {0, 0, 0};
+  geometry::point_t t1p2 {0, 1, 0};
+  geometry::point_t t1p3 {0, 0, 1};
+  geometry::point_t t2p1 {0.1, 0.25, 0.33};
+  geometry::point_t t2p2 {0.1, 0.25, 0.33};
+  geometry::point_t t2p3 {0.1, 0.25, 0.33};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_point_4) {
+  geometry::point_t t1p1 {0, 0, 0};
+  geometry::point_t t1p2 {0, 1, 0};
+  geometry::point_t t1p3 {0, 0, 1};
+  geometry::point_t t2p1 {0, 0, 0};
+  geometry::point_t t2p2 {0, 0, 0};
+  geometry::point_t t2p3 {0, 0, 0};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_point_5) {
+  geometry::point_t t1p1 {0, 0, 0};
+  geometry::point_t t1p2 {0, 1, 0};
+  geometry::point_t t1p3 {0, 0, 1};
+  geometry::point_t t2p1 {0, 0, 0};
+  geometry::point_t t2p2 {0, 0, 0};
+  geometry::point_t t2p3 {0, 0, 0};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_point_6) {
+  geometry::point_t t1p1 {2, -2, -1};
+  geometry::point_t t1p2 {1, 1, -1};
+  geometry::point_t t1p3 {2, 2, 1};
+  geometry::point_t t2p1 {2, 0, 0};
+  geometry::point_t t2p2 {2, 0, 0};
+  geometry::point_t t2p3 {2, 0, 0};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_line_segm_1) {
+  geometry::point_t t1p1 {1, 0, 0};
+  geometry::point_t t1p2 {0, 1, 0};
+  geometry::point_t t1p3 {0, 0, 1};
+  geometry::point_t t2p1 {0, 0, 0};
+  geometry::point_t t2p2 {0, 0, 0};
+  geometry::point_t t2p3 {1, 1, 0};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_line_segm_2) {
+  geometry::point_t t1p1 {1, 0, 0};
+  geometry::point_t t1p2 {0, 1, 0};
+  geometry::point_t t1p3 {0, 0, 1};
+  geometry::point_t t2p1 {0, 0, 0};
+  geometry::point_t t2p2 {0, 0, 0};
+  geometry::point_t t2p3 {1, 1, 1};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_line_segm_3) {
+  geometry::point_t t1p1 {1, 0, 0};
+  geometry::point_t t1p2 {0, 1, 0};
+  geometry::point_t t1p3 {0, 0, 1};
+  geometry::point_t t2p1 {0, 0, 0};
+  geometry::point_t t2p2 {0, 0, 0};
+  geometry::point_t t2p3 {-1, 1, 1};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_line_segm_4) {
+  geometry::point_t t1p1 {1, 0, 0};
+  geometry::point_t t1p2 {0, 1, 0};
+  geometry::point_t t1p3 {0, 0, 1};
+  geometry::point_t t2p1 {0, 0, 0};
+  geometry::point_t t2p2 {0, 0, 0};
+  geometry::point_t t2p3 {0.25, 0.25, 0.25};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_line_segm_5) {
+  geometry::point_t t1p1 {5, 3, 2};
+  geometry::point_t t1p2 {1, 1, 0};
+  geometry::point_t t1p3 {-2, 3, 1};
+  geometry::point_t t2p1 {6, 3, 2};
+  geometry::point_t t2p2 {1, 3, 0};
+  geometry::point_t t2p3 {1, 3, 0};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_line_segm_6) {
+  geometry::point_t t1p1 {5, 3, 2};
+  geometry::point_t t1p2 {1, 1, 0};
+  geometry::point_t t1p3 {-2, 3, 1};
+  geometry::point_t t2p1 {6, 2, 7};
+  geometry::point_t t2p2 {1, 3, 0};
+  geometry::point_t t2p3 {1, 3, 0};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, triangle_intersection_with_line_segm_7) {
+  geometry::point_t t1p1 {2, 0, 0};
+  geometry::point_t t1p2 {0, 2, 0};
+  geometry::point_t t1p3 {0, 0, 0};
+  geometry::point_t t2p1 {0.5, 0.5, 0.5};
+  geometry::point_t t2p2 {0.5, 0.5, 1};
+  geometry::point_t t2p3 {0.5, 0.5, 1};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, degenerate_to_point_1) {
@@ -196,7 +365,7 @@ TEST(triangle, degenerate_to_line_1) {
   geometry::point_t p3 {5.23, 41.141, 8.23};
   geometry::triangle_t t {p1, p2, p3};
 
-  ASSERT_TRUE(t.degenerate() == geometry::line);
+  ASSERT_TRUE(t.degenerate() == geometry::line_segm);
 }
 
 TEST(triangle, degenerate_to_line_2) {
@@ -205,7 +374,7 @@ TEST(triangle, degenerate_to_line_2) {
   geometry::point_t p3 {10, 20, 0};
   geometry::triangle_t t {p1, p2, p3};
 
-  ASSERT_TRUE(t.degenerate() == geometry::line);
+  ASSERT_TRUE(t.degenerate() == geometry::line_segm);
 }
 
 TEST(triangle, not_degenerate_1) {
@@ -255,7 +424,7 @@ TEST(triangle, intersection_3d_points_intersection_1) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_line_and_point_intersection_1) {
@@ -268,7 +437,7 @@ TEST(triangle, intersection_3d_line_and_point_intersection_1) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_line_and_point_intersection_3) {
@@ -281,7 +450,7 @@ TEST(triangle, intersection_3d_line_and_point_intersection_3) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_line_and_point_intersection_2) {
@@ -294,7 +463,7 @@ TEST(triangle, intersection_3d_line_and_point_intersection_2) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(!t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_line_intersection_1) {
@@ -307,7 +476,7 @@ TEST(triangle, intersection_3d_line_intersection_1) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_line_intersection_2) {
@@ -320,7 +489,7 @@ TEST(triangle, intersection_3d_line_intersection_2) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(!t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_line_intersection_3) {
@@ -333,7 +502,7 @@ TEST(triangle, intersection_3d_line_intersection_3) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(!t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_line_intersection_4) {
@@ -346,7 +515,7 @@ TEST(triangle, intersection_3d_line_intersection_4) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_1) {
@@ -359,7 +528,7 @@ TEST(triangle, intersection_3d_1) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_2) {
@@ -372,7 +541,7 @@ TEST(triangle, intersection_3d_2) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_3) {
@@ -385,7 +554,7 @@ TEST(triangle, intersection_3d_3) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_4) {
@@ -398,7 +567,7 @@ TEST(triangle, intersection_3d_4) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(!t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_5) {
@@ -411,7 +580,7 @@ TEST(triangle, intersection_3d_5) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(!t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_6) {
@@ -424,7 +593,7 @@ TEST(triangle, intersection_3d_6) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_7) {
@@ -437,7 +606,7 @@ TEST(triangle, intersection_3d_7) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(!t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_8) {
@@ -450,7 +619,7 @@ TEST(triangle, intersection_3d_8) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_9) {
@@ -463,7 +632,7 @@ TEST(triangle, intersection_3d_9) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_10) {
@@ -476,7 +645,7 @@ TEST(triangle, intersection_3d_10) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_11) {
@@ -489,7 +658,7 @@ TEST(triangle, intersection_3d_11) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(!t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_12) {
@@ -502,7 +671,7 @@ TEST(triangle, intersection_3d_12) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_13) {
@@ -515,7 +684,7 @@ TEST(triangle, intersection_3d_13) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_15) {
@@ -528,7 +697,7 @@ TEST(triangle, intersection_3d_15) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(!t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(!t1.is_intersect_triangle_3d(t2));
 }
 
 TEST(triangle, intersection_3d_16) {
@@ -541,7 +710,7 @@ TEST(triangle, intersection_3d_16) {
   geometry::triangle_t t1 {t1p1, t1p2, t1p3};
   geometry::triangle_t t2 {t2p1, t2p2, t2p3};
 
-  ASSERT_TRUE(t1.is_intersect_triangles_3d(t2));
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
 /* Plane tests */

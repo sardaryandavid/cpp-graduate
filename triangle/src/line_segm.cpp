@@ -23,12 +23,6 @@ static bool is_sol_exist(double a1, double a2, double a3) {
   double b1 = std::min(a3 / a1, (a3 - a2) / a1);
   double b2 = std::max(a3 / a1, (a3 - a2) / a1);
 
-  #ifdef DEBUG
-  std::cout << "In is_sol_exist: \n";
-  std::cout << "a1 = " << a1 << " " << " a2 = " << a2 << " a3 = " << a3 << "\n";
-  std::cout << "b1 = " << b1 << " b2 = " << b2 << std::endl;
-  #endif
-
   if (is_neg(b2) || is_pos(b1 - 1))
     return false;
 
@@ -63,13 +57,6 @@ bool line_segm_t::is_intersect_line_segm(const line_segm_t& ls) const {
   double c2 = ls.b_.z_ - ls.a_.z_;
   double c3 = ls.b_.z_ - b_.z_;
 
-  #ifdef DEBUG
-  std::cout << "In is_intersect:\n";
-  std::cout << "a1 = " << a1 << " a2 = " << a2 << " a3 = " << a3 << std::endl;
-  std::cout << "b1 = " << b1 << " b2 = " << b2 << " b3 = " << b3 << std::endl;
-  std::cout << "c1 = " << c1 << " c2 = " << c2 << " c3 = " << c3 << std::endl;
-  #endif
-
   if (is_eq(det(a1, a2, b1, b2), 0)) {
     if (!is_eq(det(a1, a2, c1, c2), 0))
       return solve_system_and_check(a1, a2, a3, c1, c2, c3, b1, b2, b3);
@@ -80,5 +67,15 @@ bool line_segm_t::is_intersect_line_segm(const line_segm_t& ls) const {
 
   else
     return solve_system_and_check(a1, a2, a3, b1, b2, b3, c1, c2, c3);
+}
+
+bool line_segm_t::is_intersect_point(const point_t& p) const {
+  if (a_ == p)
+    return true;
+
+  vector_t v1 = p - a_;
+  vector_t v2 = b_ - a_;
+  vector_t vp = p;
+  return (v1.is_collinear(v2) && vp.inside(a_, b_));
 }
 } // geometry

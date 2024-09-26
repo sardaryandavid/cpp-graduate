@@ -12,7 +12,14 @@ add_compile_options(
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
-add_executable(triangles src/main.cpp)
+set(SOURCES src/main.cpp
+            src/point.cpp
+            src/vector.cpp
+            src/plane.cpp
+            src/triangle.cpp
+            src/line_segm.cpp)
+
+add_executable(triangles ${SOURCES})
 target_include_directories(triangles PRIVATE include)
 
 if (DEBUG)

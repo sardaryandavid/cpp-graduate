@@ -32,7 +32,7 @@ struct vector_t {
   bool operator==(const vector_t& v) const;
   bool operator!=(const vector_t& v) const;
   
-  bool inside(const point_t& min, const point_t& max) const;
+  bool inside(const point_t& p1, const point_t& p2) const;
 
   bool is_collinear(const vector_t& v) const;
 

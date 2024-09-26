@@ -1,6 +1,9 @@
+#include <cassert>
+
 #include "point.h"
 
 namespace geometry {
+  
 point_t point_t::operator+(const point_t& p) const {
   point_t res{x_ + p.x_, y_ + p.y_, z_ + p.z_};
   return res;
@@ -35,7 +38,7 @@ point_t point_t::operator*(double d) const {
   return res;
 }
 
-bool point_t::is_intersect_points(const point_t& p) const {
+bool point_t::is_intersect_point(const point_t& p) const {
   if (is_eq(x_, p.x_) && is_eq(y_, p.y_) && is_eq(z_, p.z_))
     return true;
 
@@ -44,5 +47,12 @@ bool point_t::is_intersect_points(const point_t& p) const {
 
 void point_t::print() const {
   std::cout << x_ << " " << y_ << " " << z_ << std::endl;
+}
+
+point_t input_point() {
+  double x, y, z;
+  std::cin >> x >> y >> z;
+  point_t res {x, y, z};
+  return res;
 }
 }

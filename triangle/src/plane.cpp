@@ -1,6 +1,7 @@
 #include "plane.h"
 
 namespace geometry {
+
 bool plane_t::plane_intersection(const plane_t& p, line_t& l) const {
   vector_t d = n_.vector_mult(p.n_);
   if (is_eq(d.len(), 0))
@@ -45,5 +46,7 @@ bool plane_t::is_parallel(const plane_t& p) const {
   return is_eq(v.len(), 0);
 }
 
-void plane_t::print() const { n_.print(); std::cout << d_ << std::endl; }
+void plane_t::print() const { 
+  n_.print(); std::cout << d_ << std::endl; 
+}
 } // geometry

@@ -13,7 +13,5 @@ struct line_t {
 
   line_t() : p_(), d_() {}
   line_t(const vector_t& p, const vector_t& d) : p_(p), d_(d) {}
-
-  bool is_intersect_point_line(const point_t& p, const point_t& min, const point_t& max) const;
 };
 } // geometry

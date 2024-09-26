@@ -20,7 +20,9 @@ struct point_t {
   point_t operator=(const point_t& p);
   point_t operator*(double) const;
 
-  bool is_intersect_points(const point_t& p) const;
+  bool is_intersect_point(const point_t& p) const;
   void print() const;
 };
+
+point_t input_point();
 } // geometry
