@@ -713,6 +713,32 @@ TEST(triangle, intersection_3d_16) {
   ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
 }
 
+TEST(triangle, intersection_3d_17) {
+  geometry::point_t t1p1 {1, 0, 0};
+  geometry::point_t t1p2 {0, 1, 0};
+  geometry::point_t t1p3 {0, 0, 1};
+  geometry::point_t t2p1 {0, 0, 0};
+  geometry::point_t t2p2 {5, 5, 0};
+  geometry::point_t t2p3 {5, 5, 10};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
+}
+
+TEST(triangle, intersection_3d_18) {
+  geometry::point_t t1p1 {0, 0, 0};
+  geometry::point_t t1p2 {5, 5, 0};
+  geometry::point_t t1p3 {5, 5, 10};
+  geometry::point_t t2p1 {0.5, 0, 0};
+  geometry::point_t t2p2 {0, 0, 0};
+  geometry::point_t t2p3 {0, 0, 0.5};
+  geometry::triangle_t t1 {t1p1, t1p2, t1p3};
+  geometry::triangle_t t2 {t2p1, t2p2, t2p3};
+
+  ASSERT_TRUE(t1.is_intersect_triangle_3d(t2));
+}
+
 /* Plane tests */
 
 TEST(plane, coincident_1) {
@@ -934,6 +960,17 @@ TEST(line_segm, intersect_10) {
   geometry::point_t p01 {1.15599, 0, 0};
   geometry::point_t p10 {6.49243, 0, 0};
   geometry::point_t p11 {1.15599, 0, 0};
+  geometry::line_segm_t ls1 {p00, p01};
+  geometry::line_segm_t ls2 {p10, p11};
+
+  ASSERT_TRUE(ls1.is_intersect_line_segm(ls2));
+}
+
+TEST(line_segm, intersect_11) {
+  geometry::point_t p00 {0, 0, 0};
+  geometry::point_t p01 {0, 0, 0};
+  geometry::point_t p10 {0, 0, 0};
+  geometry::point_t p11 {0, 0, 0};
   geometry::line_segm_t ls1 {p00, p01};
   geometry::line_segm_t ls2 {p10, p11};
 

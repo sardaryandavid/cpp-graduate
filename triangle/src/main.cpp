@@ -32,7 +32,7 @@ int main() {
 
   for (size_t i = 0; i < N; ++i)
     if (tarr[i].second)
-      ans.push_back(i + 1);
+      ans.push_back(i);
 
   std::sort(ans.begin(), ans.end());
 

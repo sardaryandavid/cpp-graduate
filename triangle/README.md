@@ -1,6 +1,6 @@
 # Triangles
-I've implemented an algorithm that detects the intersection of triangles (and all corner cases such as points and line segments).
-Algorithm you can find in "Geometric Tools for Computer Graphics", Philip J. Schneider, David H. Eberly, 11.5.4 section.
+I've implemented the algorithm that detects the intersection of triangles (and all corner cases such as points and line segments).
+You can find algorithm in "Geometric Tools for Computer Graphics", Philip J. Schneider, David H. Eberly, 11.5.4 section.
 ## Build
 ```
 mkdir build

@@ -52,6 +52,7 @@ void point_t::print() const {
 point_t input_point() {
   double x, y, z;
   std::cin >> x >> y >> z;
+  assert(std::cin.good());
   point_t res {x, y, z};
   return res;
 }
