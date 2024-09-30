@@ -36,7 +36,7 @@ struct triangle_t {
   bool is_intersect_line_segm(const line_segm_t& ls) const;
   bool check_corner_cases(const triangle_t& t, bool& is_corner_case) const;
 
-  inline void print() const;
+  void print() const;
 };
 
 triangle_t input_triangle();

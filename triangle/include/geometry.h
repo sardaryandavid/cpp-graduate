@@ -101,7 +101,7 @@ inline void calculate_intervals_wrap(double v1, double v2, double v3,
       t1 = t2 = v2;
   }
 
-  else if (is_eq(d3, 0))
+  else
     t1 = t2 = v3;
 }
 } // geometry

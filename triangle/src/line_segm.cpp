@@ -20,7 +20,7 @@ static bool is_sol_exist(double a1, double a2, double a3) {
   }
 
   else if (is_eq(a2, 0)) {
-    return is_eq(a3, 0);
+    return (((a3 / a1) >= 0) && ((a3 / a1) <= 1));
   }
 
   double b1 = std::min(a3 / a1, (a3 - a2) / a1);

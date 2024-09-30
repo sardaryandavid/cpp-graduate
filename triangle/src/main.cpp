@@ -12,7 +12,7 @@ int main() {
 
   for (size_t i = 0; i < N; ++i)
     tarr.push_back(std::make_pair(geometry::input_triangle(), false));
-  
+
   std::vector<int> ans; 
   for (size_t i = 0; i < N; ++i) {
     if (tarr[i].second) {
@@ -22,7 +22,7 @@ int main() {
     for (size_t j = 0; j < N; ++j) {
       if (i == j)
         continue;
-
+      
       if (tarr[i].first.is_intersect_triangle_3d(tarr[j].first)) {
         tarr[i].second = true;
         tarr[j].second = true;
